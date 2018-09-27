@@ -1,10 +1,13 @@
 package com.example.cartermccall.beautifulbulldog;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -19,12 +22,14 @@ public class BulldogActivity extends AppCompatActivity {
     private RadioGroup ratingGroup;
     private int ratingID, rating;
     private RadioButton radioButton;
+    private ImageView imageField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bulldog);
 
+        imageField = (ImageView) findViewById(R.id.image_field);
         nameField = (TextView) findViewById(R.id.name_field);
         ageField = (TextView) findViewById(R.id.age_field);
         Realm realm = Realm.getDefaultInstance();
@@ -36,6 +41,10 @@ public class BulldogActivity extends AppCompatActivity {
 
         nameField.setText(bulldog.getName());
         ageField.setText(bulldog.getAge());
+        if(bulldog.getImage() != null){
+            Bitmap bmp = BitmapFactory.decodeByteArray(bulldog.getImage(),0,bulldog.getImage().length);
+            imageField.setImageBitmap(bmp);
+        }
         voteButton = (Button) findViewById(R.id.vote_button);
 
         voteButton.setOnClickListener(new View.OnClickListener() {
@@ -64,4 +73,6 @@ public class BulldogActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
