@@ -34,20 +34,28 @@ public class RankingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rankings, container, false);
-
-        Realm realm = Realm.getDefaultInstance();
-        final RealmResults<Vote> votes = realm.where(Vote.class).findAll();
         rankingList = (RecyclerView) view.findViewById(R.id.ranking_list);
 
 
         layoutManager = new LinearLayoutManager(getContext());
         rankingList.setLayoutManager(layoutManager);
-
-        rankingAdapter = new RankingsAdapter(getContext(),votes);
-        rankingList.setAdapter(rankingAdapter);
+        refreshList();
 
 
         return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        refreshList();
+    }
+
+    private void refreshList(){
+        Realm realm = Realm.getDefaultInstance();
+        final RealmResults<Vote> votes = realm.where(Vote.class).findAll();
+        RankingsAdapter adapter = new RankingsAdapter(getActivity(),votes);
+        rankingList.setAdapter(adapter);
     }
 
 }
